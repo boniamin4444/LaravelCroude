@@ -46,7 +46,7 @@
 
 </div>
 
-<!--Login Modal -->
+<!--Login Modal a -->
 
 <div class="modal fade" id="loginModal" tabindex="-1" @if(session('login_errors')) style="display:block;" @endif>
 
