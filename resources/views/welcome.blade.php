@@ -22,7 +22,7 @@
     <div class="row">
         <div class="col-md-12">
             <h2 class="mb-4">Product List</h2>
-
+            
             @if ($products->count())
                 <div class="row">
                     @foreach ($products as $product)

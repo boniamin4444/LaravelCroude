@@ -5,43 +5,91 @@
 	 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg" style="background-color: #007bff;">
   <div class="container-fluid">
-  <a class="navbar-brand" href="{{url('/')}}">cogent</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav mr-auto">
-    	@guest
-    		<li class="nav-item">
-    			<a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
-    		</li>
-    		<li class="nav-item">
-    			<a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
-    		</li>
-    	@endguest
-
-    	@auth
-    	<li class="nav-item">
-    	<a class="nav-link" href="{{route('products.index')}}">Products</a>
-    	</li>
-		<li class="nav-item">
-    	<a class="nav-link" href="{{route('categories.index')}}">Category</a>
-    	</li>
-    	<li class="nav-item">
-    		<form id="logout-form" action="{{route('logout')}}" method="post" class="d-none">
-    			@csrf    			
-    		</form>
-    		<a href="#" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout({{ Auth::user()->name }})
-    		</a>
-    	</li>
-    	@endauth     
-
-    </ul>
+    <a class="navbar-brand text-white" href="{{ url('/') }}">Cogent</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        @auth
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ route('products.index') }}">Products</a>
+          </li>
+		  <li class="nav-item">
+            <a class="nav-link text-white" href="{{ route('categories.index') }}">Category</a>
+          </li>
+          <li class="nav-item">
+            <form id="logout-form" action="{{ route('logout') }}" method="post" class="d-none">
+              @csrf
+            </form>
+            <a href="#" class="nav-link text-white" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout ({{ Auth::user()->name }})</a>
+          </li>
+        @endauth
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        @guest
+          <li class="nav-item">
+            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
+          </li>
+        @endguest
+      </ul>
+    </div>
   </div>
- </div>
 </nav>
+
+<style>
+  .navbar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-link {
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+  }
+
+  /* Custom styles for the toggler */
+  .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .navbar-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='white'%3E%3Cpath stroke='rgba(255,255,255,.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+</style>
+
+
+<style>
+  .navbar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-link {
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+  }
+
+  .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .navbar-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='white'%3E%3Cpath stroke='rgba(255,255,255,.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
+</style>
+
 
 <div class="container mt-4">
 
@@ -49,41 +97,40 @@
 
 </div>
 
-<!--Login Modal -->
+<!--Login Modal a -->
 
 <div class="modal fade" id="loginModal" tabindex="-1" @if(session('login_errors')) style="display:block;" @endif>
-
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Login</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>         
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form action="{{ route('login.post')}}" method="post">
-        	@csrf
-        	<div class="form-group mb-3">
-        		<label>Email Address:</label>
-        		<input type="text" name="email" class="form-control" value="{{ old('email')}}">
-        	</div>
-        	<div class="form-group mb-3">
-        		<label>Password:</label>
-        		<input type="password" name="password" class="form-control">
-        	</div>
+          @csrf
+          <div class="form-group mb-3">
+            <label>Email Address:</label>
+            <input type="text" name="email" class="form-control" value="{{ old('email') }}">
+          </div>
+          <div class="form-group mb-3">
+            <label>Password:</label>
+            <input type="password" name="password" class="form-control">
+          </div>
 
-        	<!-- Display error -->
+          @if(session('login_errors'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              {{ session('login_errors') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          @endif
 
-        	@if(session('login_errors'))
-        		<div class="alert alert-danger alert-dismissible fade show" role="alert">
-        			{{ session('login_errors')}}
-        			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        		</div>
-        	@endif
-
-        	<button type="submit" class="btn btn-primary">Login</button>
-	       </form>
-      </div>      
+          <button type="submit" class="btn btn-primary">Login</button>
+          <div class="mt-2">
+            <a href="{{ route('password.request') }}">Forgot your password?</a>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

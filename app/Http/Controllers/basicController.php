@@ -23,8 +23,3 @@ class basicController extends Controller
 
    
 }
-/* thbjnhjnjknjknjk 
-boniamin best
-nnnndfdff 
-
-*/

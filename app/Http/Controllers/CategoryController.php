@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('category.index', compact('categories'));
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        return view('categories.create');
     }
 
     /**
@@ -36,64 +36,68 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // Corrected the validation array syntax
-        $validated = $request->validate([
-            'category_name' => 'required|max:255',
+        $request->validate([
+            'category_name' => 'required|string|max:255',
         ]);
 
-        Category::create($validated);
-
-        return redirect()->route('categories.index')->with('success', 'Category Created Successfully');
+        return redirect()->route('categories.index')->with('success','Category create successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        return view('category.show', compact('category'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        return view('category.edit', compact('category'));
+        $category = Category::findOrFail($id);
+        return view('categories.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'category_name' => 'required|max:255',
+        $request->validate([
+            'category_name' => 'required|string|max:255',
         ]);
 
-        $category->update($validated);
-        return redirect()->route('categories.index')->with('success', 'Category Updated Successfully');
+        $category = Category::findOrFail($id);
+        $category->update([
+            'category_name' => $request->category_name,
+        ]);
+
+        return redirect()->route('categories.index')->with('success','Category Update successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Category  $category
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
+        $category = Category::findOrFail($id);
         $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category Deleted Successfully');
+
+        return redirect()->route('categories.index')->with('success','Category Delete Successfully');
     }
 }
