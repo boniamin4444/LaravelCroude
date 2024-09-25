@@ -33,6 +33,7 @@ Route::get('register', function () {
 //POST routes (handling form submission)
 Route::get('/',[ProductShowController::class,'show'])->name('welcome.show');
 
+Route::get('email/verify/{id}/{hash}', [AuthController::class,'verifyEmail'])->name('verification.verify');
 
 Route::post('login',[AuthController::class,'login'])->name('login.post');
 Route::post('register',[AuthController::class,'register'])->name('register.post');
