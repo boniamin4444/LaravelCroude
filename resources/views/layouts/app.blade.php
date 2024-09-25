@@ -26,9 +26,6 @@
     	<li class="nav-item">
     	<a class="nav-link" href="{{route('products.index')}}">Products</a>
     	</li>
-		<li class="nav-item">
-    	<a class="nav-link" href="{{route('categories.index')}}">Category</a>
-    	</li>
     	<li class="nav-item">
     		<form id="logout-form" action="{{route('logout')}}" method="post" class="d-none">
     			@csrf    			

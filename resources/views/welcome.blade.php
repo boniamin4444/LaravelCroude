@@ -14,6 +14,15 @@
         <div class="col-md-12">
             <h2 class="mb-4">Product List</h2>
 
+
+    <div class="container mt-5">
+        @if(Session::has('message'))
+            <div class="alert alert-warning">
+                {{session('message')}}
+            </div>
+        @endif
+    </div>
+
             @if ($products->count())
                 <div class="row">
                     @foreach ($products as $product)
