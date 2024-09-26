@@ -52,7 +52,7 @@
   }
 
   .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 182, 193, 0.7);
     border-radius: 5px;
   }
 
@@ -67,28 +67,10 @@
 </style>
 
 
-<style>
-  .navbar {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  }
 
-  .nav-link {
-    transition: color 0.3s ease, background-color 0.3s ease;
-  }
 
-  .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-  }
 
-  .navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.5);
-  }
 
-  .navbar-toggler .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='white'%3E%3Cpath stroke='rgba(255,255,255,.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-  }
-</style>
 
 
 <div class="container mt-4">
