@@ -42,6 +42,7 @@ Route::get('password/reset/{token}', [PasswordResetController::class, 'showReset
 Route::post('password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
 
 Route::get('/', [frontController::class, "index"]);
+
 Route::get('/products', [frontController::class, 'index'])->name('products.index');
 
 Route::post('/products/filter', [frontController::class, 'filterProducts'])->name('products.filter');
