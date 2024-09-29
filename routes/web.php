@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\basicController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductShowController;
+use App\Http\Controllers\frontController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 
@@ -20,9 +20,9 @@ use App\Http\Controllers\Auth\PasswordResetController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+
+
 
 Route::get('login', function () {
     return redirect('/products');
@@ -41,7 +41,10 @@ Route::get('password/reset/{token}', [PasswordResetController::class, 'showReset
 // Password reset submission
 Route::post('password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
 
-Route::get('/',[ProductShowController::class,'show'])->name('welcome.show');
+Route::get('/', [frontController::class, "index"]);
+Route::get('/products', [frontController::class, 'index'])->name('products.index');
+
+Route::post('/products/filter', [frontController::class, 'filterProducts'])->name('products.filter');
 
 
 Route::post('login',[AuthController::class,'login'])->name('login.post');
