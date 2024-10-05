@@ -69,7 +69,10 @@ Route::middleware(['custom.auth'])->group(function(){
 });
 
 
-
+Route::get('/admin/login',function()
+{
+	return view('/admin.login');
+});
 
 
 
