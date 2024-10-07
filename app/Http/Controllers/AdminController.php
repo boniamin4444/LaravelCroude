@@ -47,7 +47,7 @@ class AdminController extends Controller
         }
         else
         {
-        $request->session()->flash('error','Please enter valid password');
+        $request->session()->flash('error','Please enter a valid password');
         return redirect('admin');
         }
        }
