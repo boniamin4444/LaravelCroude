@@ -13,7 +13,7 @@ class frontController extends Controller
     public function index()
     {
         $categories = Category::all();
-        $products = Product::all(); // Initially load all active products
+        $products = Product::paginate(5); // Initially load all active products
 
         return view('welcome', compact('categories', 'products'));
     }
@@ -21,21 +21,41 @@ class frontController extends Controller
     // Filter products by selected categories using AJAX
     public function filterProducts(Request $request)
     {
+        $products = Product::query();
+
         // If categories are selected, filter products by the selected categories
+
         if ($request->has('categories') && !empty($request->categories)) 
         {
-            $categories = $request->categories; // Get the selected categories array
+            
 
-            // Fetch products where category_id is in the selected categories (without status restriction)
-            $products = Product::whereIn('category_id', $categories)->get();
+            $products = $products->whereIn('category_id', $request->categories);
         } 
-        else 
+        
+        //Filter by selecting price
+
+        if ($request->has('prices') && !empty($request->prices)) 
         {
-            // If no category is selected, return all products (active and inactive)
-            $products = Product::all();
+           $priceRanges = $request->prices;
+
+            $products = $products->where(function($query) use ($priceRanges)
+            {
+                foreach($priceRanges as $range)
+                {
+                    [$min, $max] = explode('-',$range);
+                    $query->orWhereBetween('price',[(int)$min, (int)$max]);
+                }
+            });
+           
         }
 
-        // Return the filtered products as JSON
-        return response()->json($products);
+        $products = $products->paginate(5);
+
+        $html = view('products.filtered',compact('products'))->render();
+
+        $pagination = $products->links()->render();
+
+        return response()->json(['html'=>$html, 'pagination'=>$pagination]);
+            
     }
   }

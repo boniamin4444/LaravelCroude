@@ -38,7 +38,8 @@ class AuthController extends Controller
     		}
 
     		$request->session()->regenerate();
-    		return redirect()->intended('products');
+    		//return redirect()->intended('products');
+            return Redirect::to('/');
     	}
 
     	return Redirect::to('/')->with('message','Invalid Credentials');

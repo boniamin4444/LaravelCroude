@@ -7,97 +7,58 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
+    	$result['data'] = Category::all();
+    	return view('admin.category', $result);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function manage_category(Request $request, $id='')
     {
-        return view('categories.create');
+    	if($id > 0)
+    	{
+    		$arr = Category::where(['id'=>$id])->get();
+    		$result['category_name'] = $arr['0']->category_name;
+    		$result['id'] = $arr['0']->id;
+    	}
+    	else
+    	{
+    		$result['category_name'] = '';
+    		$result['id'] = 0;
+    	}
+    	return view('admin/manage_category', $result);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function manage_category_process(Request $request)
     {
-        $request->validate([
-            'category_name' => 'required|string|max:255',
-        ]);
+    	$request->validate([
 
-        return redirect()->route('categories.index')->with('success','Category create successfully');
+    		'category_name'=>'required|unique:categories',
+    	]);
+
+    	if($request->post('id') > 0)
+    	{
+    		$model = Category::find($request->post('id'));
+    		$msg = "Category Updated";
+    	}
+
+    	else
+    	{
+    		$model = new Category();
+    		$msg = "category Inserted";
+    	}
+
+    	$model->category_name = $request->post('category_name');
+    	$model->save();
+    	$request->session()->flash('message', $msg);
+    	return redirect('admin/category');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function delete(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $category = Category::findOrFail($id);
-        return view('categories.edit', compact('category'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'category_name' => 'required|string|max:255',
-        ]);
-
-        $category = Category::findOrFail($id);
-        $category->update([
-            'category_name' => $request->category_name,
-        ]);
-
-        return redirect()->route('categories.index')->with('success','Category Update successfully');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $category = Category::findOrFail($id);
-        $category->delete();
-
-        return redirect()->route('categories.index')->with('success','Category Delete Successfully');
+    	$model = Category::find($id);
+    	$model->delete();
+    	$request->session()->flash('message', 'Category Deleted');
+    	return redirect('admin/category');
     }
 }

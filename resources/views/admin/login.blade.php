@@ -21,6 +21,8 @@
     <!-- Bootstrap CSS-->
     <link href="{{asset('admin_assets/vendor/bootstrap-4.1/bootstrap.min.css')}}" rel="stylesheet" media="all">
 
+    
+
     <!-- Main CSS-->
     <link href="{{asset('admin_assets/css/theme.css')}}" rel="stylesheet" media="all">
 
@@ -38,7 +40,8 @@
                             </a>
                         </div>
                         <div class="login-form">
-                            <form action="" method="post">
+                            <form action="{{ route('admin.auth') }}" method="post">
+                            @csrf
                                 <div class="form-group">
                                     <label>Email Address</label>
                                     <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
@@ -50,17 +53,18 @@
                                 <div class="login-checkbox">
                                     <label>
                                         <input type="checkbox" name="remember">Remember Me
-                                    </label>
-                                    <label>
-                                        <a href="#">Forgotten Password?</a>
-                                    </label>
+                                    </label>                                    
                                 </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
-                                                              
-                                                                                         
-                                 </form>                                       
-                                                     
-                            </div>
+
+                                @if(session('error'))
+                                <div class="alert alert-danger" role="alert">
+                                    {{ session('error') }}
+                                </div>
+                                @else
+                                @endif        
+                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -72,15 +76,16 @@
     <!-- Jquery JS-->
     <script src="{{asset('admin_assets/vendor/jquery-3.2.1.min.js')}}"></script>
     <!-- Bootstrap JS-->
-    <script src="{{asset('admin_assets/vendor/slick/slick.min.js')}}"> 
+    <script src="{{asset('admin_assets/vendor/bootstrap-4.1/popper.min.js')}}"></script>
+    <script src="{{asset('admin_assets/vendor/bootstrap-4.1/bootstrap.min.js')}}"></script>
+    
+    <script src="{{asset('admin_assets/vendor/wow/wow.min.js')}}"></script>
    
-    <script src="{{asset('admin_assets/vendor/counter-up/jquery.waypoints.min.js')}}"></script>
-    <script src="{{asset('admin_assets/vendor/counter-up/jquery.counterup.min.js')}}">
-    </script>
-    <script src="{{asset('admin_assets/vendor/circle-progress/circle-progress.min.js')}}"></script>
-    <script src="{{asset('admin_assets/vendor/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
+
+    
+   
     <script src="{{asset('admin_assets/vendor/chartjs/Chart.bundle.min.js')}}"></script>
-    <script src="{{asset('admin_assets/vendor/select2/select2.min.js')}}">
+    
     </script>
 
     <!-- Main JS-->
@@ -89,4 +94,3 @@
 </body>
 
 </html>
-<!-- end document-->
