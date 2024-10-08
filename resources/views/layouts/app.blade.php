@@ -21,6 +21,29 @@
     			<a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
     		</li>
         @else
+            
+            <li class="nav-item dropdown">
+                <a href="{{ route('notifications.markAsRead')}}" class="nav-link" id="notificationsDropdown" role="button" data-bs-toggle="dropdown">New&nbsp;<span class="badge bg-danger">{{ auth()->user()->unreadNotifications->count() }}</span></a>
+
+                <div class="dropdown-menu dropdown-menu-end">
+                    @foreach(auth()->user()->unreadNotifications as $notification)
+
+                    <a href="{{ route('product.details', $notification->data['product_id'])}}" class="dropdown-item">
+                        {{ $notification->data['product_name']}} was added! <span class="text-muted small">{{
+                            $notification->created_at->diffForHumans()
+                        }}</span>
+                    </a>
+                    
+
+                    @endforeach
+
+                    @if(auth()->user()->unreadNotifications->isEmpty())
+                        <a href="#" class="dropdown-item text-muted">No New Notifications</a>
+                    @endif                   
+                </div>
+            </li>
+
+
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" id="cartDropdown" role="button" data-bs-toggle="dropdown">
                     Cart ({{ session()->has('cart') ? count(session('cart')) : 0}})

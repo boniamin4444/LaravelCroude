@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CouponController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,11 +101,25 @@ Route::middleware(['custom.auth'])->group(function(){
 	Route::put('/products/{id}',[ProductController::class,'update'])->name('products.update');	
 	});
 
-	Route::get('admin/logout', function(){
+	//product notifications
 
+	Route::get('noptifications/mark-as-read', function(){
+		auth()->user()->unreadNotifications->markAsRead();
+		return redirect()->back();
+	})->name('notifications.markAsRead');
+
+	Route::get('/product-details/{id}', function($id){
+		$product = Product::findOrFail($id);
+
+		auth()->user()->unreadNotifications->where('data.product_id', $id)->markAsRead();
+
+		return view('products.product_details', compact('product'));
+	})->name('product.details');;
+
+    Route::get('admin/logout', function() {
 		session()->forget('ADMIN_LOGIN');
 		session()->forget('ADMIN_ID');
-		session()->flash('error','Logout Successfully');
+		session()->flash('error', 'Logout Successfully');
 		return redirect('admin');
 	});
 

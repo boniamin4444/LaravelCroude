@@ -3,8 +3,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewProductNotification;
 
 class ProductController extends Controller
 {
@@ -47,7 +50,15 @@ class ProductController extends Controller
     }
 
 
-    Product::create($validatedData);
+    $product = Product::create($validatedData);
+
+    $users = User::all();
+    foreach($users as $user)
+    {
+        $user->notify(new NewProductNotification($product)); 
+    }
+
+
    
     return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
