@@ -29,10 +29,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-       
-
-    
-    $validatedData = $request->validate([
+         $validatedData = $request->validate([
         'category_id' => 'required|exists:categories,id',
         'product_name' => 'required|string|max:255',
         'details' => 'required|string',
@@ -111,6 +108,12 @@ class ProductController extends Controller
        
         $product = Product::findOrFail($id);
         $product->delete();
+
+        $users = User::all();
+      foreach($users as $user)
+      {
+         $user->notify(new NewProductNotification($product));
+      }
       
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
