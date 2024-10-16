@@ -9,5 +9,9 @@ class Coupon extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['couponName', 'value', 'status'];
+    protected $fillable = ['coupon_code', 'expire_date', 'status', 'value'];
+
+    protected $casts = [
+        'expire_date' => 'datetime', // Cast expire_date to a Carbon instance
+    ];
 }

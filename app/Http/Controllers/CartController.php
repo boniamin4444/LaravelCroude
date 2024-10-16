@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Carbon\Carbon;
+
 
 class CartController extends Controller
 {
@@ -59,4 +61,43 @@ class CartController extends Controller
     	session()->forget('cart');
     	return redirect()->back()->with('success','Cart cleared successfully');
     }
+
+	public function applyCoupon(Request $request)
+	{
+		//Validated controller
+		$request->validate([
+			'coupon_code' => 'required|string',
+		]);
+
+		//fetch coupon
+
+		$coupon = Coupon::where('coupon_code', $request->coupon_code)
+		    ->where('status', 'active')
+		    ->where('expire_date', '>=', Carbon::now())
+		    ->first();
+
+		if(!$coupon)
+		{
+			return back()->with('error','Invalid or Expired Coupon');
+
+		}
+
+		$cartItems = session()->get('cart',[]);
+		$subtotal = array_reduce( $cartItems, function($sum, $item){
+
+			return $sum + ($item['price'] * $item['quantity']);
+		},0);
+
+		$subtotal = ($subtotal * $coupon->value) /100;
+		session()->put('discount', $discount);
+
+		return back()->with('success','Coupon applied successfully');
+	}
+
+	public function Placeholder()
+	{
+		session()->forget('cart');
+		session()->forget('discount');
+		return redirect()->route('cart.view')->with('success','order place successfully');
+	}
 }
